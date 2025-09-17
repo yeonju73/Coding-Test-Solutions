@@ -10,12 +10,7 @@ for _ in range(n):
     setList.add(input().strip())
     
 for _ in range(m):
-    size = len(setList)
-    inputStr = input().strip()
-    setList.add(inputStr)
-    if size == len(setList):
+    if input().strip() in setList:
         count += 1
-        continue
-    setList.remove(inputStr)
     
 print(count)
