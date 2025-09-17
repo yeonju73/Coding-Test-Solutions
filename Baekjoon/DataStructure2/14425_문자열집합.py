@@ -8,11 +8,14 @@ count = 0
 
 for _ in range(n):
     setList.add(input().strip())
-
+    
 for _ in range(m):
+    size = len(setList)
     inputStr = input().strip()
-    for setStr in setList:
-        if inputStr == setStr:
-            count += 1
-
+    setList.add(inputStr)
+    if size == len(setList):
+        count += 1
+        continue
+    setList.remove(inputStr)
+    
 print(count)
