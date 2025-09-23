@@ -1,58 +1,46 @@
 import sys
 input = sys.stdin.readline
 
-def check_3_bingo():
-    count = 0
+
+def solve():
+    size = 5
+    mylist = [list(map(int, input().rstrip().split())) for _ in range(size)]
+    bingolist_flat = [num for row in [list(map(int, input().rstrip().split())) for _ in range(size)] for num in row]
     
-    # 가로 빙고 체크
-    for i in range(size):
-        for j in range(size):
-            if mylist[i][j] != -1:
-                break
-            elif j == size-1:
-                count += 1
-                
-    # 세로 빙고 체크
-    for i in range(size):
-        for j in range(size):
-            if mylist[j][i] != -1:
-                break
-            elif j == size-1:
-                count += 1
+    # 딕셔너리를 사용해 숫자의 위치를 저장 {숫자: (행, 열)}
+    num_to_pos = {mylist[r][c]: (r, c) for r in range(size) for c in range(size)}
     
-    # 오른쪽 대각선 빙고 체크
-    for i in range(size):
-        if mylist[i][i] != -1:
+    # 각 행, 열, 대각선의 -1 개수를 추적
+    rows_marked = [0] * size
+    cols_marked = [0] * size
+    diag1_marked = 0 # 오른쪽 아래 대각선
+    diag2_marked = 0 # 왼쪽 아래 대각선
+    bingo_count = 0
+    
+    for i, num in enumerate(bingolist_flat):
+        r, c = num_to_pos.get(num)
+        
+        rows_marked[r] += 1
+        if rows_marked[r] == size:
+            bingo_count += 1
+        
+        cols_marked[c] += 1
+        if cols_marked[c] == size:
+            bingo_count += 1
+        
+        if r == c:
+            diag1_marked += 1
+            if diag1_marked == size:
+                bingo_count += 1
+        
+        # (0, 4), (1, 3), (2, 2), (3, 1), (4, 0)
+        if r + c == size - 1:
+            diag2_marked += 1
+            if diag2_marked == size:
+                bingo_count += 1
+        
+        if bingo_count >= 3:
+            print(i + 1)
             break
-        elif i == size-1:
-            count += 1
-    
-    # 왼쪽 대각선 빙고 체크
-    for i in range(size):
-        if mylist[size-i-1][i] != -1:
-            break
-        elif i == size-1:
-            count += 1
-            
-    return count >= 3
 
-size = 5
-mylist = list()
-bingolist = list()
-
-for _ in range(size):
-    mylist.append(list(map(int, input().rstrip().split())))
-
-for _ in range(size):
-    bingolist.append(list(map(int, input().rstrip().split())))
-
-for lineCount in range(size):
-    for c in range(size):
-        for row in range(size):
-            for col in range(size):
-                if mylist[row][col] == bingolist[lineCount][c]:
-                    mylist[row][col] = -1
-                    if check_3_bingo():
-                        print((lineCount * size) + (c + 1))
-                        exit(0)
-                    break
+solve()
