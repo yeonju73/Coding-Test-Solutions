@@ -1,5 +1,6 @@
 import sys
 input = sys.stdin.readline
+from collections import deque
 
 def solve():
     n = int(input().rstrip())
@@ -16,7 +17,7 @@ def solve():
     dx = [-1, 1, 0, 0]
     dy = [0, 0, -1, 1]
     
-    direction_list = []
+    direction_list = deque()
     
     for i in range(3, n + 1, 2):
         direction_list.append((dx[0], dy[0]))
@@ -38,7 +39,7 @@ def solve():
     while(len(direction_list) != 0):
         number += 1
         
-        direc = direction_list.pop(0)
+        direc = direction_list.popleft()
         x += direc[0]
         y += direc[1]
         
