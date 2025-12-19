@@ -1,18 +1,21 @@
 import sys
 input = sys.stdin.readline
 
+solved = False # 답 찾았는지 여부를 전역 상태로 관리
+
 def dfs_recursion(graph:dict, v, visited:set, depth):
+    global solved
     visited.add(v)
     depth += 1
     
     if depth == 5:
-        print(1)
-        exit()
+        solved = True
+        return
     
     for node in graph[v]:
         if node not in visited:
             dfs_recursion(graph, node, visited, depth)
-            visited.remove(node)
+            visited.remove(node) # 백트래킹
     
 
 def main():
@@ -25,9 +28,11 @@ def main():
         relations[f2].append(f1)
 
     for i in range(N):
+        if solved: 
+            break
         visited = set()
         dfs_recursion(relations, i, visited, 0)
         
-    print(0)
+    print(1 if solved else 0)
         
 main()
