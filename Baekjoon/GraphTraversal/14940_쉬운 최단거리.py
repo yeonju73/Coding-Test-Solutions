@@ -19,23 +19,27 @@ for i in range(n):
 
 
 # bfs
-my_list[start[0]][start[1]] = 0
-queue = deque([start])
-
+queue = deque(list())
+visited = set()
+queue.append((start[0], start[1], 0))
 
 while queue:
     current = queue.popleft()
-    value = my_list[current[0]][current[1]]
+    current_point = (current[0], current[1])
     
-    for d in direc:
-        dx = current[0] + d[0]
-        dy = current[1] + d[1]
+    if current_point not in visited:
+        visited.add(current_point)
         
-        # 1일 때 아직 방문 하지 않은 노드라 판별
-        if 0 <= dx < n and 0 <= dy < m and my_list[dx][dy] == 1:
-            my_list[dx][dy] = value + 1 # 거리 갱신
-            queue.append((dx, dy)) # 큐에 넣고
-            visited.add((dx, dy)) # 방문처리
+        # 처음 방문일 때만 값 업데이트
+        value = current[2]
+        my_list[current_point[0]][current_point[1]] = value
+        
+        for d in direc:
+            dx = current_point[0] + d[0]
+            dy = current_point[1] + d[1]
+            
+            if 0 <= dx < n and 0 <= dy < m and my_list[dx][dy] != 0:
+                queue.append((dx, dy, value+1))
                 
 for line in range(n):
     for i in range(m):
