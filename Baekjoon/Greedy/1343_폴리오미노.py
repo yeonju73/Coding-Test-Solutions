@@ -9,18 +9,15 @@ def polinomio(input_list):
     result = list()
     
     for i in input_list:
-        if i == '':
-            result.append('')
         # 길이가 2로 나누어지지 않으면 바로 종료
-        elif len(i) % 2 != 0:
+        if len(i) % 2 != 0:
             return -1
-        elif len(i) % 4 == 0:
-            result.append(len(i) * 'A')
-        # 4로 나누어 떨어지지 않으면, 최대한 A로 채운 뒤 나머지만 B로 채움
-        elif len(i) // 4 > 0:
-            result.append(((len(i)//4) * 'AAAA') + ((len(i)%4) * 'B'))
-        else:
-            result.append(len(i) * 'B')
+        
+        # len(i)가 0일 경우, result에는 빈 문자열이 삽입됨
+        a_part = (len(i)//4) * 'AAAA'
+        b_part = ((len(i)%4)//2) * 'BB'
+        result.append(a_part + b_part)
+        
     return '.'.join(result)
 
 print(polinomio(input_list))
