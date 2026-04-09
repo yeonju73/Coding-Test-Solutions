@@ -1,25 +1,47 @@
 import sys
 input = sys.stdin.readline
 
+def find(x):
+    if parent[x] != x:
+        parent[x] = find(parent[x]) # 상위 부모 찾기
+    return parent[x]
+
+def union(a, b):
+    a = find(a)
+    b = find(b)
+
+    # 부모 통일
+    if a < b:
+        parent[b] = a
+    else:
+        parent[a] = b
+
 n, m = map(int, input().rstrip().split())
-peple_list = list(map(int, input().rstrip().split()))
-know_set = set()
+peple_list = list(map(int, input().rstrip().split()))[1:]
+party_list = list()
 
-result = m
+# 스스로의 값으로 초기화
+parent = list(range(n+1))
+result = 0
 
-# 한 명이라도 있을 때
-if len(peple_list) > 1:
-    for peo in peple_list[1:]:
-        know_set.add(peo)
-
-for i in range(m):
+for _ in range(m):
     new_list = list(map(int, input().rstrip().split()))
-    new_set = set(new_list[1:])
-    
-    # 파티에 온 사람이랑 알고있는 사람이랑 겹치는 사람이 있을 경우
-    # -> 진실을 얘기한다
-    if len(new_set.intersection(know_set)) > 0:
-        know_set.add(new_set)
-    # 없을 경우 과장된 얘기를 한다.
+    party_list.append(new_list[1:])
+
+    for i in range(1, len(new_list)-1):
+        union(new_list[i], new_list[i+1])
+
+# 진실을 아는 사람의 부모 집합
+know_set = set()
+for know in peple_list:
+    know_set.add(find(know))
+
+for party in party_list:
+    flag = True
+    for p in party:
+        if find(p) in know_set:
+            flag = False
+            break
+    if flag: result+=1
     
 print(result)
