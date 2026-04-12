@@ -22,6 +22,7 @@ party_list = list()
 
 # 스스로의 값으로 초기화
 parent = list(range(n+1))
+print(parent)
 result = 0
 
 for _ in range(m):
