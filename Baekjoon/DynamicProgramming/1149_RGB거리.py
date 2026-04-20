@@ -22,5 +22,4 @@ for house in input_list:
             
     dp.append(house_list)
     
-print(dp)
 print(min(dp[-1]))
