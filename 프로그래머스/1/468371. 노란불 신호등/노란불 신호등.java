@@ -22,13 +22,6 @@ class Solution {
             sinal_array.add(temp);
         }
         
-        // for (ArrayList<Character> c: sinal_array) {
-        //     for (Character cc : c) {
-        //         System.out.print(cc);
-        //     }
-        //     System.out.println();
-        // }
-        
         boolean flag = true;
         for (int time = 0; time < 2000000; time++) { 
             flag = true;
