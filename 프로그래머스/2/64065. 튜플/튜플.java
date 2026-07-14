@@ -2,15 +2,10 @@ import java.util.*;
 
 class Solution {
     public List<Integer> solution(String s) {
-        StringTokenizer st;
-        
-        st = new StringTokenizer(s.substring(2, s.length()-2), "}");
-        int size = st.countTokens();
-        
         Map<Integer, Integer> map = new HashMap<>();
         
-        st = new StringTokenizer(s.substring(2, s.length()-2), "{},");
-        
+        StringTokenizer st = new StringTokenizer(s.substring(2, s.length()-2), "{},");
+                
         int n = st.countTokens();
         
         for(int i = 0; i < n; i++) {
