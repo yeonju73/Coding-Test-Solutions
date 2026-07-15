@@ -18,7 +18,8 @@ class Solution {
         
         for (int i = N; i >= 1; i--) {
             temp += userStageMap.get(i);
-            if (userStageMap.get(i) == 0) 
+            // 스테이지에 도달한 유저가 없는 경우
+            if (temp == 0) 
                 answer[i-1] = 0;
             else
                 answer[i-1] = ((double)userStageMap.get(i) / temp);
@@ -31,8 +32,6 @@ class Solution {
         }
         
         Arrays.sort(stageIds, (k1, k2) -> {
-            if (answer[k2 - 1] == answer[k1 - 1])
-                return k1 - k2;
             return Double.compare(answer[k2 - 1], answer[k1 - 1]);
         });
         
