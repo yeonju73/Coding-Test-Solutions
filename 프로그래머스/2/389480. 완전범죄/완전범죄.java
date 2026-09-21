@@ -1,50 +1,39 @@
 import java.util.*;
-
 class Solution {
     public int solution(int[][] info, int n, int m) {
-        int answer = -1;
-        // int[i][j] dp : i번째 물건까지 봤을 때, a의 흔적이 j개이고, B의 흔적의 최솟값
+        final int INF = 100000;
         
-        int infoSize = info.length;
-        int[][] dp = new int[infoSize+1][n];
+        int[] dp = new int[m]; // dp[j]: B의 흔적이 j개일때 A흔적의 최솟값
+        Arrays.fill(dp, INF);
+        dp[0] = 0; // 흔적이 0개일 때 A흔적의 최솟값은 0
         
-        // 큰 값으로 초기화
-        for ( int i = 0; i <= infoSize; i++) {
-            Arrays.fill(dp[i], 999999);
-        }
-        
-        // 시작점 정의
-        dp[0][0] = 0;
-        
-        for (int i = 1; i <= infoSize; i++) {
-            int aTrace = info[i-1][0];
-            int bTrace = info[i-1][1];
+        for(int[] item : info) {
+            int a = item[0];
+            int b = item[1];
             
-            for(int j = 0; j < n; j++){
+            int[] nextDp = new int[m];
+            Arrays.fill(nextDp, INF);
+            
+            for(int j=0; j<m; j++) {
+                if(dp[j] == INF) continue;
                 
-                // i 번째 물건을 A가 훔치는 경우
-                int selectA = 999999;
-                // 이전상태에서 j - aTrace 여야 지금 A의 흔적이 j가 됨
-                if(j - aTrace >= 0) {
-                    // 이전의 흔적값 그대로 가져옴. A가 훔치니까 B의 흔적값에 더할 필요 X
-                    selectA = dp[i-1][j - aTrace];
+                nextDp[j] = Math.min(nextDp[j], dp[j]+a); // A가 훔칠경우 (B흔적 j는 유지, A흔적 a를 추가)
+                
+                if(j+b<m) {
+                    nextDp[j+b] = Math.min(nextDp[j+b], dp[j]);
                 }
-                
-                // i번째 물건을 B가 훔치는 경우
-                // 이전 흔적값에지금 흔적값 더해서 저장
-                int selectB = dp[i-1][j] + bTrace;
-                
-                dp[i][j] = Math.min(selectA, selectB);
             }
+            dp = nextDp;
         }
         
-        for (int i = 0; i < n; i++) {
-            if (dp[infoSize][i] < m) {
-                answer = i;
-                break;
+        // B의 흔적이 m 미만인 경우 중, A의 흔적이 n 미만인 최솟값 탐색
+        int answer = INF;
+        for (int j = 0; j < m; j++) {
+            if (dp[j] < n) {
+                answer = Math.min(answer, dp[j]);
             }
         }
-        
-        return answer;
+
+        return answer == INF ? -1 : answer;
     }
 }
